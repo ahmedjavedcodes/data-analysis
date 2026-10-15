@@ -1,0 +1,49 @@
+# --- Secrets & env ---
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# --- Python (backend) ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+backend/data/runs/
+backend/debug/
+
+# --- Playwright ---
+test-results/
+playwright-report/
+playwright/.cache/
+
+# --- Node / Next.js (frontend) ---
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+.pnpm-store/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- TypeScript ---
+*.tsbuildinfo
+next-env.d.ts
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs ---
+*.log
