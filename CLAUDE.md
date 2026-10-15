@@ -6,11 +6,9 @@ Central guide, memory, and coding standard for this repository. Read this before
 
 ## 1. Project Overview
 
-**Daraz AI Review Analyzer** takes a Daraz.pk product URL, scrapes the product and **all** of its reviews, uses a Groq-hosted LLM to generate product-specific feature categories (e.g. Camera, Battery, Value for Money for a phone), and scores every review with **Jev**, TypeSafe's decision model, on a 5-level sentiment rubric (Hostile → Enthusiastic). The results are aggregated (EDA) and shown in a Next.js dashboard: net sentiment, score distribution, recency windows, monthly trend, common terms, and the review feed with each review's score.
+**Daraz AI Review Analyzer** takes a Daraz.pk product URL, scrapes the product and **all** of its reviews, uses a Groq-hosted LLM to generate product-specific feature categories (e.g. Camera, Battery, Value for Money for a phone), and scores every review with **Jev**, TypeSafe's decision model, on a 3-level sentiment rubric (Negative, Neutral, Positive; scores 0.0–2.0). In the same Jev request, each review is also checked against every generated category ("does it talk about Packaging?") and scored for that category. The results are aggregated (EDA) and shown in a Next.js dashboard: net sentiment, score distribution, recency windows, monthly trend, per-feature mention share and score, common terms, and the review feed.
 
-**Core value:** turn hundreds of unstructured reviews into "how do buyers feel, and is it getting better or worse" in seconds.
-
-> Reviews are not yet mapped to the generated feature categories (see §8).
+**Core value:** turn hundreds of unstructured reviews into "how do buyers feel about each feature, and is it getting better or worse" in seconds.
 
 ---
 
@@ -22,7 +20,7 @@ Central guide, memory, and coding standard for this repository. Read this before
 │  (URL input, │                          │ 2. Scrape product + paginated reviews  (Playwright → BeautifulSoup)     │
 │  dashboard)  │ ◀─── SSE progress ────── │ 3. Clean & normalize                                                    │
 │              │ ◀─── AnalysisResult ──── │ 4. Generate feature categories        (Groq LLM, structured output)     │
-└──────────────┘                          │ 5. Score reviews → Jev (parallel)     (TypeSafe Jev, Score question)    │
+└──────────────┘                          │ 5. Score reviews → Jev (parallel)     (TypeSafe Jev, Score + Noul)      │
                                           │ 6. EDA / aggregation                  (pandas, pure functions)          │
                                           │ 7. Return AnalysisResult JSON                                           │
                                           └─────────────────────────────────────────────────────────────────────────┘
@@ -36,8 +34,8 @@ Central guide, memory, and coding standard for this repository. Read this before
 | 2 | Scraping | `app/scraper/` | `DarazProductRef` → `RawProduct` + `list[RawReview]` |
 | 3 | Cleaning (pandas) | `app/pipeline/cleaning.py` | `raw_reviews.csv` → `clean_reviews.csv` |
 | 4 | Feature generation | `app/llm/feature_generator.py` | `Product` → `FeatureSet` (4–8 features + `Overall`) |
-| 5 | Jev scoring | `app/llm/jev/` | `clean_reviews.csv` rows → `JEVReviewInput` → one Score request each → `jev_scores.csv` |
-| 6 | EDA / aggregation (pandas) | `app/pipeline/aggregation.py` | `jev_scores.csv` + `clean_reviews.csv` → `AnalysisResult` (`analysis.json`) |
+| 5 | Jev scoring | `app/llm/jev/` | `clean_reviews.csv` rows + `features.json` → one request per review → `jev_scores.csv` + `jev_category_scores.csv` |
+| 6 | EDA / aggregation (pandas) | `app/pipeline/aggregation.py` | `jev_scores.csv` + `jev_category_scores.csv` + `clean_reviews.csv` → `AnalysisResult` (`analysis.json`) |
 | 7 | UI rendering | `frontend/` | `AnalysisResult` → dashboard |
 
 ### Stage details
@@ -54,14 +52,18 @@ Central guide, memory, and coding standard for this repository. Read this before
 4. **Feature generation (Groq)** — One LLM call with product name + breadcrumb category + a sample of ~20 reviews. Returns a `FeatureSet` of 4–8 concise, non-overlapping feature names with one-line descriptions. `Overall` is always appended by code (never trust the LLM to include it). Cache by `item_id` (TTL 24h).
 
 5. **Jev scoring** — [TypeSafe Jev](https://docs.typesafe.ai/api) is a decision model, not a generative LLM: no chat endpoint, no system prompt, no JSON to parse.
-   - Each review is one `POST {JEV_BASE_URL}/systemone` request: `state` = review text, plus one Score question whose `criteria` are the 5 levels in `app/llm/prompts/jev_sentiment_v1.json` (Hostile, Negative, Neutral, Positive, Enthusiastic).
-   - Jev returns a probability-weighted `score` on the **0-based** level index (0.0–4.0), plus per-level probabilities and a confidence. The score is stored per review in `jev_scores.csv` and returned on every review in `AnalysisResult`.
+   - Each review is one `POST {JEV_BASE_URL}/systemone` request: `state` = review text, plus a `questions` map that Jev answers in a single pass:
+     - `sentiment`: Score whose `criteria` are the 3 levels in `app/llm/prompts/jev_sentiment_v3.json` (Negative, Neutral, Positive), with instructions covering Roman Urdu complaint phrases.
+     - per generated category `i` except `Overall`: `c{i}_mentioned`, a **Noul** (Jev's yes/no type; `"boolean"` is rejected), returning `{"noul": <probability>}`; and `c{i}_score`, a Score on the same levels.
+   - Score answers are a probability-weighted value on the **0-based** level index (0.0–2.0 for v3), plus per-level probabilities and a confidence. The overall score goes to `jev_scores.csv`; category rows go to `jev_category_scores.csv`.
+   - A category counts as mentioned when `noul ≥ 0.5`. Its score is stored **only** when mentioned. Jev still answers the category Score for reviews that never mention it, and those values are filler (about 2.x).
+   - On Sensodyne, adding 6 categories (13 questions) left latency unchanged (~0.35 s per request, 3.0 s for 78 reviews) and raised input tokens from about 415 to about 1,500 per review.
    - The direct API uses bare model ids (`jev-1.14.0`; `GET /v1/models` lists aliases). `typesafe/jev-1.14` is the OpenRouter form and needs an OpenRouter key.
    - No retries: a failed request leaves that review unscored (counted as unprocessed). A rejected key, or no review scored at all, raises `LLM_UNAVAILABLE`.
 
-6. **EDA / aggregation** — Pure, deterministic functions (no model calls). Definitions in `docs/decisions/0001-jev-sentiment-metrics.md`. Reviews map to sentiment by nearest level (0–1 negative, 2 neutral, 3–4 positive). Outputs: average score, net sentiment (% positive − % negative of scored reviews), level counts, 7/30/90-day and all-time windows, monthly trend (empty months kept), top terms with their average score, the analysed reviews' star distribution, and the review feed. Star ratings are reported alongside but never substituted for a missing score.
+6. **EDA / aggregation** — Pure, deterministic functions (no model calls). Definitions in `docs/decisions/0001-jev-sentiment-metrics.md`. Reviews map to sentiment by nearest level relative to the rubric midpoint (v3: 0 negative, 1 neutral, 2 positive). Everything downstream reads `scale.max_level` instead of assuming a range, so runs saved on the older 0–4 rubric still display correctly. Outputs: average score, net sentiment (% positive − % negative of scored reviews), level counts, 7/30/90-day and all-time windows, monthly trend (empty months kept), top terms with their average score, the analysed reviews' star distribution, and the review feed (each review with the features it mentions). Per feature: mention count and share of scored reviews, average category score, net sentiment, average stars of the reviewers who mention it, and up to 3 quotes (lowest-scored first). `Overall` covers scored reviews that mention no other category, using their overall score. Star ratings are reported alongside but never substituted for a missing score.
 
-7. **UI** — Product header, KPI row (net sentiment, average Jev score, recency windows, positive/neutral/negative counts), score-level distribution, monthly score trend, term frequency coloured by average score, and the review feed pairing stars with each review's Jev score. Progress is streamed via Server-Sent Events while the pipeline runs.
+7. **UI** — Product header, KPI row (net sentiment, average Jev score, recency windows, positive/neutral/negative counts), score-level distribution, monthly score trend, feature cards (mention share vs. score, so common friction stands apart from rare but severe risk), term frequency coloured by average score, and the review feed pairing stars with each review's overall and per-feature Jev scores. Progress is streamed via Server-Sent Events while the pipeline runs.
 
 ### Data flow & run files (pandas + CSV)
 
@@ -74,7 +76,8 @@ backend/data/runs/<item_id>_<YYYYmmdd-HHMMSS>/
 ├── clean_reviews.csv     # after pandas cleaning
 ├── run_meta.json         # scraped_at, reviews_scraped, partial — scrape facts no CSV carries
 ├── features.json         # FeatureGenerationOutcome from Groq
-├── jev_scores.csv        # Jev output: ONE ROW PER REVIEW sent to Jev
+├── jev_scores.csv        # Jev overall score: ONE ROW PER REVIEW sent to Jev
+├── jev_category_scores.csv  # Jev per category: ONE ROW PER (scored review, category except Overall)
 └── analysis.json         # the AnalysisResult returned by the API
 ```
 
@@ -83,9 +86,11 @@ CSV columns (keep these names stable; they are the contract between stages):
 | File | Columns |
 |------|---------|
 | `raw_reviews.csv` / `clean_reviews.csv` | `review_id, rating, text, raw_text, review_date, sku_info, helpful_count` |
-| `jev_scores.csv` | `review_id, score (0–4), level (nearest), confidence, model, rubric_version` |
+| `jev_scores.csv` | `review_id, score (0..max_level), level (nearest), confidence, model, rubric_version` |
+| `jev_category_scores.csv` | `review_id, feature, mention_probability, mentioned, score, level, confidence` |
 
-- `score`, `level` and `confidence` are empty for a review whose Jev request failed; aggregation treats it as unscored.
+- `score`, `level` and `confidence` are empty for a review whose Jev request failed (it then has no category rows); aggregation treats it as unscored.
+- In `jev_category_scores.csv`, `score`/`level`/`confidence` are empty unless `mentioned`.
 
 ---
 
@@ -155,7 +160,7 @@ CORS_ORIGINS=http://localhost:3000
 ```
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 ```
-> Model names are defaults; check them before relying on them. Groq retired the Llama defaults by 2026-10 (`groq.Groq().models.list()`); Jev's ids are at `GET {JEV_BASE_URL}/models`.
+> Model names are defaults; check them before relying on them. Groq retired the Llama defaults by 2026-10 (`groq.Groq().models.list()`); `llama3-70b-8192` and `mixtral-8x7b-32768` return 400 "decommissioned", while `openai/gpt-oss-120b` (OpenAI's open-weight model) is live; Jev's ids are at `GET {JEV_BASE_URL}/models`.
 
 ### Backend
 ```bash
@@ -191,7 +196,7 @@ uv run python -m scripts.run_clean --run data/runs/<run>
 # Feature generation only → features.json
 uv run python -m scripts.run_features --run data/runs/<run>
 
-# Jev scoring only → jev_scores.csv (limit for cheap test runs)
+# Jev scoring only → jev_scores.csv + jev_category_scores.csv (limit for cheap test runs)
 uv run python -m scripts.run_jev --run data/runs/<run> --limit 30
 
 # Aggregation only → analysis.json
@@ -227,7 +232,7 @@ pnpm lint && pnpm typecheck && pnpm test
   - Always pass explicit `dtype` on read (`review_id` is **`str`**, never int — leading zeros and long IDs break). Parse dates with `pd.to_datetime(..., utc=True, format="ISO8601")`: without `format`, pandas infers it from the first row and silently turns rows with fractional seconds into NaT.
   - Write with `encoding="utf-8"` and `index=False`; use `utf-8-sig` only for exports meant to be opened in Excel (keeps Urdu text readable).
   - Validate each DataFrame's columns and types on load with a `pandera` schema (or a `REQUIRED_COLUMNS` check) so a broken CSV fails loudly.
-  - DataFrame → Jev: convert rows with `JEVReviewInput.model_validate(row)` over `df.to_dict("records")` (`app/pipeline/jev_inputs.py`); Jev output → one `jev_scores.csv` row per review.
+  - DataFrame → Jev: convert rows with `JEVReviewInput.model_validate(row)` over `df.to_dict("records")` (`app/pipeline/jev_inputs.py`); Jev output → one `jev_scores.csv` row per review and one `jev_category_scores.csv` row per (review, category).
   - Iterate rows with `to_dict("records")`, not `itertuples()` (pandas-stubs types `itertuples` fields as a broad union that fails `mypy --strict`).
   - Cleaning and aggregation functions are pure: DataFrame in, new DataFrame out, no in-place mutation of the input, no file I/O inside them.
 - Use `Literal`/`Enum` for closed sets, `Field(ge=1, le=5)` for ratings, `model_config = ConfigDict(extra="forbid")` on all LLM output models so hallucinated keys fail validation.
@@ -243,17 +248,23 @@ class JEVReviewInput(BaseModel):        # one review sent to Jev
     text: str
     star_rating: int = Field(ge=1, le=5)
 
-class ScoreRubric(BaseModel):           # loaded from prompts/jev_sentiment_v1.json
+class ScoreRubric(BaseModel):           # loaded from prompts/jev_sentiment_v2.json
     version: str
-    question_id: str
+    question_id: str                    # "sentiment"
     instructions: str
+    category_mention_instructions: str  # "{name}" / "{description}" placeholders
+    category_score_instructions: str
     criteria: list[str] = Field(min_length=2, max_length=10)   # level 0 .. level n-1
 
-class ScoreAnswer(BaseModel):           # Jev response: answers[question_id]
+class ScoreAnswer(BaseModel):           # Jev answers[...] for a Score question
     type: Literal["score"]
     score: float                        # probability-weighted level index, 0-based
     confidence: float
     probabilities: dict[str, float]
+
+class NoulAnswer(BaseModel):            # Jev answers[...] for a Noul (yes/no) question
+    type: Literal["noul"]
+    noul: float                         # probability of "yes"
 ```
 - Jev responses are parsed as typed API JSON (an unexpected shape raises `JEVRequestError`); there is no LLM-text parsing or repair step.
 
@@ -276,15 +287,20 @@ class ScoreAnswer(BaseModel):           # Jev response: answers[question_id]
 
 ### 5.5 Model calls: Groq (categories) and Jev (review scoring)
 - **Groq is used only for feature generation**: one call per product through `app/llm/groq_client.py` (shared instance, central timeout and retries), `with_structured_output(FeatureSet)`, temperature ~0.3. Review classification never goes to Groq. A Groq-based JEV attempt hit this tier's 8,000 tokens/min limit on 3 of 8 batches.
-- **Jev scores reviews**: one Score request per review through `app/llm/jev/client.py`, run with `asyncio.TaskGroup` gated by `asyncio.Semaphore(JEV_MAX_CONCURRENCY)`. Never fire an unbounded `gather`. Reviews are capped at 8,000 chars to stay under Jev's ~32 KB standard-context limit.
+- **Jev scores reviews**: one request per review (overall Score + per-category Noul and Score) through `app/llm/jev/client.py`, run with `asyncio.TaskGroup` gated by `asyncio.Semaphore(JEV_MAX_CONCURRENCY)`. Never fire an unbounded `gather`. Reviews are capped at 8,000 chars to stay under Jev's ~32 KB standard-context limit.
 - **No retry loops around Jev**: a failed request leaves the review unscored, and the job continues. Don't replace a missing score with a star-rating guess.
-- Prompts and rubrics are versioned files in `app/llm/prompts/` (`features_v1.md`, `jev_sentiment_v1.json`). Changing a rubric means a new version file, and the version appears in logs and in `jev_scores.csv`.
+- Prompts and rubrics are versioned files in `app/llm/prompts/` (`features_v1.md`, `jev_sentiment_v3.json`; v1/v2 are kept because older runs cite them). Changing a rubric means a new version file, and the version appears in logs and in `jev_scores.csv`.
 - Log per-job token usage and latency.
 
 ### 5.6 UI styling (Tailwind CSS)
 - Tailwind v4 utility classes only; no inline `style` except for dynamic chart widths. Use `clsx`/`tailwind-merge` via a `cn()` helper.
-- Design tokens (colors, radius, spacing) defined once in the Tailwind theme / CSS variables; support light and dark mode.
-- Rating color scale: `≥4.0` emerald, `3.0–3.9` amber, `<3.0` rose. Use the same scale everywhere (cards, bars, badges).
+- Design tokens (colors, radius, spacing) defined once in the Tailwind theme / CSS variables. **Light theme only** (product decision, 2026-10-16): no dark-mode variants.
+- Star rating scale: `≥4.0` green, `3.0–3.9` teal, `<3.0` red; star glyphs use `--star` amber. Use the same scale everywhere.
+- Sentiment colours: green positive, teal neutral, red negative (soft fill for charts, `-ink` variant for text, `-soft` for chips). AI score tone is relative to the run's range: positive from `max/2 + 0.5`, negative below `max/2 − 0.5` (0–2: ≥1.5 / <0.5). Both scales live in `src/lib/scale.ts`; never hard-code a score range.
+- **White-label:** UI text never names the models, services or APIs behind it (no Jev, Groq, LLM). Say "AI sentiment score", "Smart Feature Analysis". Stage and error copy live in `src/lib/copy.ts`; server error messages are shown only for URL/product errors.
+- **Live analysis:** `/analyze?url=` streams `GET /api/v1/analyze/stream` (SSE, events in `app/pipeline/progress.py` / `src/lib/stream.ts`): header first, progress tracker, live feature and KPI counts, shimmer skeletons for the rest, then the full dashboard at `/runs/<id>`.
+- Theme: light neutral canvas, white cards (`rounded-xl`, hairline border, faint shadow), numbers in Geist Mono, dark chart tooltips (`ChartTooltip`).
+- Recharts 3: don't use `<Cell>` (deprecated); colour via per-datum `fill` or a custom `shape`. Axis text style uses `fill`, never `stroke` (stroke outlines and blurs the text).
 - Layout: mobile-first, single column on small screens, 2–3 column feature grid on `md+`. Max content width `max-w-6xl`.
 - Components: shadcn/ui-style primitives in `components/ui/`; domain components (`FeatureCard`, `RatingBar`, `SentimentBreakdown`, `ReviewQuote`, `AnalysisProgress`) in `components/analysis/`.
 - Charts with Recharts; always label axes and show values on hover; never rely on color alone (show numbers).
@@ -309,6 +325,7 @@ All domain errors subclass `AppError` (`app/core/errors.py`) and map to a consis
 | `SCRAPE_TIMEOUT` | 504 | Page or pagination exceeded time budget |
 | `LLM_UNAVAILABLE` | 503 | Groq or Jev key missing/rejected, Groq down, or Jev could not score any review |
 | `LLM_OUTPUT_INVALID` | 502 | Feature generation unrecoverable after repair |
+| `RUN_NOT_FOUND` | 404 | `GET /api/v1/runs/{run_id}`: unknown or malformed id, or `analysis.json` saved in an older format |
 
 ### 6.2 Invalid URLs
 - Validate on the **frontend** (zod regex, instant feedback) **and** the **backend** (authoritative).
@@ -349,7 +366,7 @@ All domain errors subclass `AppError` (`app/core/errors.py`) and map to a consis
 ---
 
 ## 8. Open Questions / TODO
-- **Map reviews to feature categories.** Groq generates the categories, but nothing assigns reviews to them since JEV moved to Jev's single Score question. Option: add one Jev Noul question per category ("Does this review talk about X?") plus a per-category Score in the same request; Jev answers every question in the request in one pass.
+- Category mentions partly follow Daraz's review-form labels: products whose generated categories match the form ("Cleaning", "Freshness") get high mention counts from filled-in templates. Decide whether to tell Groq to avoid form-label categories, or to flag them in the UI.
 - Decide on job model: synchronous request with SSE progress (current plan) vs. background job queue (needed if analyses exceed ~60s).
 - Persistence: CSV run folders for now; revisit SQLite/Postgres (or Parquet) if run history or multi-user access is needed.
 - Decide whether to show per-feature trends over time using review dates.

@@ -30,8 +30,35 @@ Measured on the same run: 78/78 scored in 3.0 s, at about 415 input tokens per r
 - Unscored reviews count in `review_count` but never in score or sentiment metrics. They are never replaced by a star-rating guess, so a failed request can't quietly change the sentiment.
 - Cleaning deduplicates by `review_id` only. Identical short reviews from different buyers ("good" ×4 on Sensodyne) all count.
 
+## Update 2026-10-16: category linkage (rubric `jev_sentiment_v2`)
+
+The same request now also carries, for each generated category except `Overall`:
+- a **Noul** "does this review say anything about {name} ({description})?" (Jev rejects `type: "boolean"`; its answer is `{"noul": <probability>}`);
+- a **Score** "how does this customer feel about the product's {name}?" on the same 5 levels.
+
+| Metric | Definition |
+|---|---|
+| mentioned | `noul ≥ 0.5`. On Sensodyne the probabilities split cleanly: 0.86–0.98 vs. < 0.15. |
+| category score | stored only when mentioned. Jev answers it for unmentioned categories too, with filler values (about 2.x). |
+| `mention_share` | reviews mentioning the category ÷ scored reviews |
+| feature `avg_score` / `net_sentiment` | over the category scores of the reviews that mention it |
+| feature `avg_rating` | stars of those reviews. The gap from `avg_score` is the friction signal: on Sensodyne, Packaging, Taste and Value for Money score about 2.2–2.4 from reviewers averaging 4.6–5.0 stars. |
+| `Overall` | scored reviews that mention no other category, using their overall score |
+| quotes | up to 3 reviews: lowest category score first, then highest, then next lowest |
+
+Measured with 6 categories (13 questions): still 3.0 s for 78 reviews. Input grew from about 415 to about 1,500 tokens per review.
+
 ## Consequences
 
-- **Feature-level views are gone for now.** Nothing maps reviews to the generated categories. Candidate fix: in the same Jev request, add one Noul question per category ("Does the review talk about X?") plus a per-category Score. This needs a decision on cost and latency (one larger request per review).
-- `jev_mentions.csv` and `feature_summary.csv` are replaced by `jev_scores.csv`. `AnalysisResult` changed shape. No frontend consumed it yet.
+- `jev_mentions.csv` and `feature_summary.csv` are replaced by `jev_scores.csv` and `jev_category_scores.csv`. `AnalysisResult` changed shape. No frontend consumed it yet.
 - The model is pinned to `jev-1.14.0`: `jev-latest` resolved to 1.13.0 on 2026-10-16, so the alias isn't safe to rely on for reproducible scores.
+
+## Update 2026-10-16: 3-level rubric (`jev_sentiment_v3`)
+
+The rubric is now Negative / Neutral / Positive, so scores run 0.0–2.0, with instructions that treat Roman Urdu complaints such as "kaha kuch bheja kuch" (wrong item sent), "farig" (useless) and "dhoka" (scam) as Negative. The request keeps the `questions`/`criteria` shape the API accepts; a `task`/`levels` body is rejected with "Invalid request."
+
+- Sentiment is the nearest level against the midpoint (0 negative, 1 neutral, 2 positive).
+- The frontend reads `scale.max_level` from each result (and from the `scale` stream event), never a fixed range:
+  - tone thresholds are `max/2 ± 0.5`;
+  - "stable" mood means moves under 5% of the range.
+- Runs saved on the 0–4 rubric still render correctly.
