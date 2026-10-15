@@ -1,26 +1,124 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens (CLAUDE.md §5.6). Light neutral canvas, white cards with
+ * hairline borders, colour reserved for meaning: green positive, teal neutral,
+ * red negative, blue for the single accent. Each sentiment colour has a soft
+ * fill for charts (--pos), an ink that passes WCAG AA as text (--pos-ink) and
+ * a tint for chips (--pos-soft). Numbers are set in Geist Mono.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light theme only, by product decision; form controls follow it too. */
+  color-scheme: light;
+  --bg: #dfe4ec;
+  --surface: #f7f9fc;
+  --surface-2: #e9edf3;
+  --border: #d3d9e2;
+  --border-strong: #b9c1cd;
+  --text: #0b1220;
+  --muted: #475467;
+  --subtle: #667085;
+  --ink: #0f1b33;
+  --ink-text: #ffffff;
+  --ring: #1d4ed8;
+  --accent: #1d4ed8;
+  --accent-soft: #e6edff;
+  --star: #f5a524;
+
+  --pos: #22c55e;
+  --pos-strong: #15803d;
+  --pos-ink: #15803d;
+  --pos-soft: #ecfdf3;
+  --neu: #3b8fb5;
+  --neu-ink: #1f6b8c;
+  --neu-soft: #edf6fa;
+  --neg: #ef4444;
+  --neg-strong: #b91c1c;
+  --neg-ink: #b91c1c;
+  --neg-soft: #fef2f2;
+
+  --bar-idle: #d6dce5;
+  --tooltip-bg: #111111;
+  --tooltip-text: #ffffff;
+  --chart-grid: #e1e5ec;
+  --chart-axis: #5b6576;
+  --chart-secondary: #7c8698;
+  --shimmer: rgba(255, 255, 255, 0.6);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-ink: var(--ink);
+  --color-ink-text: var(--ink-text);
+  --color-ring: var(--ring);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-star: var(--star);
+  --color-pos: var(--pos);
+  --color-pos-strong: var(--pos-strong);
+  --color-pos-ink: var(--pos-ink);
+  --color-pos-soft: var(--pos-soft);
+  --color-neu: var(--neu);
+  --color-neu-ink: var(--neu-ink);
+  --color-neu-soft: var(--neu-soft);
+  --color-neg: var(--neg);
+  --color-neg-strong: var(--neg-strong);
+  --color-neg-ink: var(--neg-ink);
+  --color-neg-soft: var(--neg-soft);
+  --color-tooltip: var(--tooltip-bg);
+  --color-tooltip-text: var(--tooltip-text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-fade-up: fade-up 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Recharts focuses the SVG wrapper on click; keep focus visible for keyboard users only. */
+.recharts-wrapper:focus:not(:focus-visible),
+.recharts-surface:focus:not(:focus-visible) {
+  outline: none;
 }

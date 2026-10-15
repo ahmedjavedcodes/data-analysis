@@ -1,0 +1,2320 @@
+{
+  "run_id": "496954821_20261016-011141",
+  "generated_at": "2026-10-15T20:20:46.672069Z",
+  "scraped_at": "2026-10-15T20:11:41.150135Z",
+  "product": {
+    "item_id": "496954821",
+    "url": "https://www.daraz.pk/products/sensodyne-original-toothpaste-70gm-i496954821-s2379054862.html",
+    "name": "Sensodyne Original Toothpaste 70gm",
+    "category_breadcrumb": "Health & Beauty > Personal Care > Oral Care > Toothpaste",
+    "product_category": "Toothpaste",
+    "price": 378.0,
+    "overall_rating": 4.9,
+    "rating_count": 169,
+    "rating_distribution": {
+      "one_star": 2,
+      "two_star": 2,
+      "three_star": 1,
+      "four_star": 6,
+      "five_star": 156
+    }
+  },
+  "features": [
+    {
+      "name": "Cleaning",
+      "description": "How well the toothpaste removes plaque and cleans teeth.",
+      "mention_count": 25,
+      "mention_share": 0.3205,
+      "avg_score": 3.01,
+      "net_sentiment": 100.0,
+      "sentiment": {
+        "positive": 25,
+        "neutral": 0,
+        "negative": 0
+      },
+      "avg_rating": 5.0,
+      "quotes": [
+        {
+          "review_id": "78991414654821",
+          "rating": 5,
+          "score": 2.54,
+          "sentiment": "positive",
+          "text": "Cleaning:90percents Freshness:3 to 4 hours but es ka taste bilkul acha nhi Hy Fluoride Content:relief milta Hy"
+        },
+        {
+          "review_id": "82249963354821",
+          "rating": 5,
+          "score": 3.37,
+          "sentiment": "positive",
+          "text": "Cleaning:perfect 10/10 Freshness:10/10 Fluoride Content:10/10"
+        },
+        {
+          "review_id": "83042726554821",
+          "rating": 5,
+          "score": 2.76,
+          "sentiment": "positive",
+          "text": "Cleaning:ok Freshness:good Fluoride Content:ok"
+        }
+      ]
+    },
+    {
+      "name": "Freshness",
+      "description": "The lasting fresh feeling or breath after brushing.",
+      "mention_count": 25,
+      "mention_share": 0.3205,
+      "avg_score": 3.03,
+      "net_sentiment": 96.0,
+      "sentiment": {
+        "positive": 24,
+        "neutral": 1,
+        "negative": 0
+      },
+      "avg_rating": 5.0,
+      "quotes": [
+        {
+          "review_id": "78991414654821",
+          "rating": 5,
+          "score": 1.54,
+          "sentiment": "neutral",
+          "text": "Cleaning:90percents Freshness:3 to 4 hours but es ka taste bilkul acha nhi Hy Fluoride Content:relief milta Hy"
+        },
+        {
+          "review_id": "68978642154821",
+          "rating": 5,
+          "score": 3.86,
+          "sentiment": "positive",
+          "text": "Cleaning:good clean Freshness:best Fluoride Content:💯"
+        },
+        {
+          "review_id": "81297293254821",
+          "rating": 5,
+          "score": 2.92,
+          "sentiment": "positive",
+          "text": "Cleaning:ok Freshness:ok Fluoride Content:ok"
+        }
+      ]
+    },
+    {
+      "name": "Fluoride Content",
+      "description": "Presence and effectiveness of fluoride for cavity protection.",
+      "mention_count": 22,
+      "mention_share": 0.2821,
+      "avg_score": 2.95,
+      "net_sentiment": 95.5,
+      "sentiment": {
+        "positive": 21,
+        "neutral": 1,
+        "negative": 0
+      },
+      "avg_rating": 5.0,
+      "quotes": [
+        {
+          "review_id": "80575169154821",
+          "rating": 5,
+          "score": 1.98,
+          "sentiment": "neutral",
+          "text": "Freshness:10/10 Cleaning:10/10 Fluoride Content:ismay fluoride ha"
+        },
+        {
+          "review_id": "68978642154821",
+          "rating": 5,
+          "score": 3.35,
+          "sentiment": "positive",
+          "text": "Cleaning:good clean Freshness:best Fluoride Content:💯"
+        },
+        {
+          "review_id": "83042726554821",
+          "rating": 5,
+          "score": 2.67,
+          "sentiment": "positive",
+          "text": "Cleaning:ok Freshness:good Fluoride Content:ok"
+        }
+      ]
+    },
+    {
+      "name": "Value For Money",
+      "description": "Perceived price fairness relative to product benefits.",
+      "mention_count": 9,
+      "mention_share": 0.1154,
+      "avg_score": 2.3,
+      "net_sentiment": 33.3,
+      "sentiment": {
+        "positive": 6,
+        "neutral": 0,
+        "negative": 3
+      },
+      "avg_rating": 4.56,
+      "quotes": [
+        {
+          "review_id": "81184453454821",
+          "rating": 5,
+          "score": 1.0,
+          "sentiment": "negative",
+          "text": "getting Expensive day by day .... Need to find alternative"
+        },
+        {
+          "review_id": "76889663054821",
+          "rating": 5,
+          "score": 3.04,
+          "sentiment": "positive",
+          "text": "good, well packed 👏 thank you so much I like it in less price excellent taste"
+        },
+        {
+          "review_id": "82298766654821",
+          "rating": 1,
+          "score": 1.02,
+          "sentiment": "negative",
+          "text": "expensive than market due to delivery charges."
+        }
+      ]
+    },
+    {
+      "name": "Packaging",
+      "description": "Quality, safety, and presentation of the product packaging.",
+      "mention_count": 5,
+      "mention_share": 0.0641,
+      "avg_score": 2.23,
+      "net_sentiment": 20.0,
+      "sentiment": {
+        "positive": 3,
+        "neutral": 0,
+        "negative": 2
+      },
+      "avg_rating": 5.0,
+      "quotes": [
+        {
+          "review_id": "82444043154821",
+          "rating": 5,
+          "score": 1.01,
+          "sentiment": "negative",
+          "text": "good product is the same as displayed. Let's see how it performs, I will review it again with respect to medicated results after using, Packing was very poor. See pics attached. However, it is still recommended."
+        },
+        {
+          "review_id": "82471742454821",
+          "rating": 5,
+          "score": 3.06,
+          "sentiment": "positive",
+          "text": "Received on time. Well packed. Recommended."
+        },
+        {
+          "review_id": "82360080954821",
+          "rating": 5,
+          "score": 1.12,
+          "sentiment": "negative",
+          "text": "arrived safe but packaging was not upto the mark however reached without any leakage regarding product sensodyne is my only chioce i cant brush without sesodyne."
+        }
+      ]
+    },
+    {
+      "name": "Taste",
+      "description": "Flavor and palatability of the toothpaste.",
+      "mention_count": 3,
+      "mention_share": 0.0385,
+      "avg_score": 2.36,
+      "net_sentiment": 33.3,
+      "sentiment": {
+        "positive": 2,
+        "neutral": 0,
+        "negative": 1
+      },
+      "avg_rating": 5.0,
+      "quotes": [
+        {
+          "review_id": "78991414654821",
+          "rating": 5,
+          "score": 1.01,
+          "sentiment": "negative",
+          "text": "Cleaning:90percents Freshness:3 to 4 hours but es ka taste bilkul acha nhi Hy Fluoride Content:relief milta Hy"
+        },
+        {
+          "review_id": "82002043754821",
+          "rating": 5,
+          "score": 3.06,
+          "sentiment": "positive",
+          "text": "bohat achi paste hai daraz shukriya apka"
+        },
+        {
+          "review_id": "76889663054821",
+          "rating": 5,
+          "score": 3.01,
+          "sentiment": "positive",
+          "text": "good, well packed 👏 thank you so much I like it in less price excellent taste"
+        }
+      ]
+    },
+    {
+      "name": "Overall",
+      "description": "General impressions not tied to one feature.",
+      "mention_count": 39,
+      "mention_share": 0.5,
+      "avg_score": 2.9,
+      "net_sentiment": 66.7,
+      "sentiment": {
+        "positive": 28,
+        "neutral": 9,
+        "negative": 2
+      },
+      "avg_rating": 4.87,
+      "quotes": [
+        {
+          "review_id": "82455429054821",
+          "rating": 2,
+          "score": 0.1,
+          "sentiment": "negative",
+          "text": "delivery rider buhat ziada badtamez hai.."
+        },
+        {
+          "review_id": "80607972354821",
+          "rating": 5,
+          "score": 3.99,
+          "sentiment": "positive",
+          "text": "bohat kamal ki product ha sub ko leni chahiye"
+        },
+        {
+          "review_id": "76928350354821",
+          "rating": 4,
+          "score": 1.02,
+          "sentiment": "negative",
+          "text": "Delivery was on time but its not effective as i expected."
+        }
+      ]
+    }
+  ],
+  "scale": {
+    "rubric_version": "jev_sentiment_v2",
+    "max_level": 4,
+    "labels": [
+      "Hostile",
+      "Negative",
+      "Neutral",
+      "Positive",
+      "Enthusiastic"
+    ],
+    "descriptions": [
+      "Hostile. Attacks the brand or a person. Accusations of fraud, slurs, or telling others to leave.",
+      "Negative. Names a specific problem or disappointment, without attacking anyone.",
+      "Neutral. A question, a factual statement, or a mention that carries no evaluation either way.",
+      "Positive. Says something worked, or recommends it, in ordinary language.",
+      "Enthusiastic. Unprompted advocacy. Tells other people to use it, or calls it the best option available."
+    ]
+  },
+  "avg_score": 2.85,
+  "net_sentiment": 71.8,
+  "sentiment": {
+    "positive": 62,
+    "neutral": 10,
+    "negative": 6
+  },
+  "levels": [
+    {
+      "level": 0,
+      "label": "Hostile",
+      "count": 1
+    },
+    {
+      "level": 1,
+      "label": "Negative",
+      "count": 5
+    },
+    {
+      "level": 2,
+      "label": "Neutral",
+      "count": 10
+    },
+    {
+      "level": 3,
+      "label": "Positive",
+      "count": 51
+    },
+    {
+      "level": 4,
+      "label": "Enthusiastic",
+      "count": 11
+    }
+  ],
+  "recency": [
+    {
+      "days": 7,
+      "review_count": 3,
+      "scored_count": 3,
+      "avg_score": 2.78,
+      "net_sentiment": 66.7,
+      "avg_rating": 5.0
+    },
+    {
+      "days": 30,
+      "review_count": 3,
+      "scored_count": 3,
+      "avg_score": 2.78,
+      "net_sentiment": 66.7,
+      "avg_rating": 5.0
+    },
+    {
+      "days": 90,
+      "review_count": 9,
+      "scored_count": 9,
+      "avg_score": 2.38,
+      "net_sentiment": 44.4,
+      "avg_rating": 4.67
+    },
+    {
+      "days": null,
+      "review_count": 78,
+      "scored_count": 78,
+      "avg_score": 2.85,
+      "net_sentiment": 71.8,
+      "avg_rating": 4.88
+    }
+  ],
+  "trend": [
+    {
+      "month": "2024-12",
+      "review_count": 1,
+      "scored_count": 1,
+      "avg_score": 1.95,
+      "avg_rating": 5.0,
+      "net_sentiment": 0.0,
+      "sentiment": {
+        "positive": 0,
+        "neutral": 1,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-01",
+      "review_count": 0,
+      "scored_count": 0,
+      "avg_score": null,
+      "avg_rating": null,
+      "net_sentiment": null,
+      "sentiment": {
+        "positive": 0,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-02",
+      "review_count": 1,
+      "scored_count": 1,
+      "avg_score": 3.64,
+      "avg_rating": 5.0,
+      "net_sentiment": 100.0,
+      "sentiment": {
+        "positive": 1,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-03",
+      "review_count": 4,
+      "scored_count": 4,
+      "avg_score": 2.75,
+      "avg_rating": 5.0,
+      "net_sentiment": 75.0,
+      "sentiment": {
+        "positive": 3,
+        "neutral": 1,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-04",
+      "review_count": 2,
+      "scored_count": 2,
+      "avg_score": 3.42,
+      "avg_rating": 5.0,
+      "net_sentiment": 100.0,
+      "sentiment": {
+        "positive": 2,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-05",
+      "review_count": 3,
+      "scored_count": 3,
+      "avg_score": 3.07,
+      "avg_rating": 5.0,
+      "net_sentiment": 100.0,
+      "sentiment": {
+        "positive": 3,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-06",
+      "review_count": 1,
+      "scored_count": 1,
+      "avg_score": 2.98,
+      "avg_rating": 5.0,
+      "net_sentiment": 100.0,
+      "sentiment": {
+        "positive": 1,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-07",
+      "review_count": 0,
+      "scored_count": 0,
+      "avg_score": null,
+      "avg_rating": null,
+      "net_sentiment": null,
+      "sentiment": {
+        "positive": 0,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-08",
+      "review_count": 0,
+      "scored_count": 0,
+      "avg_score": null,
+      "avg_rating": null,
+      "net_sentiment": null,
+      "sentiment": {
+        "positive": 0,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-09",
+      "review_count": 2,
+      "scored_count": 2,
+      "avg_score": 3.05,
+      "avg_rating": 5.0,
+      "net_sentiment": 100.0,
+      "sentiment": {
+        "positive": 2,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-10",
+      "review_count": 2,
+      "scored_count": 2,
+      "avg_score": 2.15,
+      "avg_rating": 5.0,
+      "net_sentiment": 0.0,
+      "sentiment": {
+        "positive": 0,
+        "neutral": 2,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2025-11",
+      "review_count": 6,
+      "scored_count": 6,
+      "avg_score": 2.79,
+      "avg_rating": 5.0,
+      "net_sentiment": 66.7,
+      "sentiment": {
+        "positive": 5,
+        "neutral": 0,
+        "negative": 1
+      }
+    },
+    {
+      "month": "2025-12",
+      "review_count": 2,
+      "scored_count": 2,
+      "avg_score": 2.04,
+      "avg_rating": 4.5,
+      "net_sentiment": 0.0,
+      "sentiment": {
+        "positive": 1,
+        "neutral": 0,
+        "negative": 1
+      }
+    },
+    {
+      "month": "2026-01",
+      "review_count": 1,
+      "scored_count": 1,
+      "avg_score": 3.07,
+      "avg_rating": 5.0,
+      "net_sentiment": 100.0,
+      "sentiment": {
+        "positive": 1,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2026-02",
+      "review_count": 9,
+      "scored_count": 9,
+      "avg_score": 2.68,
+      "avg_rating": 5.0,
+      "net_sentiment": 55.6,
+      "sentiment": {
+        "positive": 6,
+        "neutral": 2,
+        "negative": 1
+      }
+    },
+    {
+      "month": "2026-03",
+      "review_count": 4,
+      "scored_count": 4,
+      "avg_score": 3.41,
+      "avg_rating": 5.0,
+      "net_sentiment": 100.0,
+      "sentiment": {
+        "positive": 4,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2026-04",
+      "review_count": 4,
+      "scored_count": 4,
+      "avg_score": 3.44,
+      "avg_rating": 5.0,
+      "net_sentiment": 100.0,
+      "sentiment": {
+        "positive": 4,
+        "neutral": 0,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2026-05",
+      "review_count": 4,
+      "scored_count": 4,
+      "avg_score": 2.55,
+      "avg_rating": 5.0,
+      "net_sentiment": 50.0,
+      "sentiment": {
+        "positive": 3,
+        "neutral": 0,
+        "negative": 1
+      }
+    },
+    {
+      "month": "2026-06",
+      "review_count": 20,
+      "scored_count": 20,
+      "avg_score": 3.03,
+      "avg_rating": 4.8,
+      "net_sentiment": 85.0,
+      "sentiment": {
+        "positive": 18,
+        "neutral": 1,
+        "negative": 1
+      }
+    },
+    {
+      "month": "2026-07",
+      "review_count": 6,
+      "scored_count": 6,
+      "avg_score": 2.5,
+      "avg_rating": 4.33,
+      "net_sentiment": 66.7,
+      "sentiment": {
+        "positive": 5,
+        "neutral": 0,
+        "negative": 1
+      }
+    },
+    {
+      "month": "2026-08",
+      "review_count": 2,
+      "scored_count": 2,
+      "avg_score": 2.51,
+      "avg_rating": 5.0,
+      "net_sentiment": 50.0,
+      "sentiment": {
+        "positive": 1,
+        "neutral": 1,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2026-09",
+      "review_count": 1,
+      "scored_count": 1,
+      "avg_score": 1.96,
+      "avg_rating": 5.0,
+      "net_sentiment": 0.0,
+      "sentiment": {
+        "positive": 0,
+        "neutral": 1,
+        "negative": 0
+      }
+    },
+    {
+      "month": "2026-10",
+      "review_count": 3,
+      "scored_count": 3,
+      "avg_score": 2.78,
+      "avg_rating": 5.0,
+      "net_sentiment": 66.7,
+      "sentiment": {
+        "positive": 2,
+        "neutral": 1,
+        "negative": 0
+      }
+    }
+  ],
+  "rating_distribution": {
+    "one_star": 1,
+    "two_star": 1,
+    "three_star": 0,
+    "four_star": 2,
+    "five_star": 74
+  },
+  "terms": [
+    {
+      "term": "good",
+      "review_count": 29,
+      "share": 0.3718,
+      "avg_rating": 4.97,
+      "avg_score": 3.01,
+      "net_sentiment": 100.0
+    },
+    {
+      "term": "kamal",
+      "review_count": 7,
+      "share": 0.0897,
+      "avg_rating": 5.0,
+      "avg_score": 3.94,
+      "net_sentiment": 100.0
+    },
+    {
+      "term": "price",
+      "review_count": 7,
+      "share": 0.0897,
+      "avg_rating": 5.0,
+      "avg_score": 2.63,
+      "net_sentiment": 57.1
+    },
+    {
+      "term": "time",
+      "review_count": 7,
+      "share": 0.0897,
+      "avg_rating": 4.86,
+      "avg_score": 2.71,
+      "net_sentiment": 71.4
+    },
+    {
+      "term": "achi",
+      "review_count": 6,
+      "share": 0.0769,
+      "avg_rating": 5.0,
+      "avg_score": 2.85,
+      "net_sentiment": 83.3
+    },
+    {
+      "term": "delivery",
+      "review_count": 6,
+      "share": 0.0769,
+      "avg_rating": 3.67,
+      "avg_score": 1.88,
+      "net_sentiment": 0.0
+    },
+    {
+      "term": "original",
+      "review_count": 6,
+      "share": 0.0769,
+      "avg_rating": 4.83,
+      "avg_score": 2.82,
+      "net_sentiment": 83.3
+    },
+    {
+      "term": "recommended",
+      "review_count": 5,
+      "share": 0.0641,
+      "avg_rating": 5.0,
+      "avg_score": 3.14,
+      "net_sentiment": 100.0
+    },
+    {
+      "term": "excellent",
+      "review_count": 4,
+      "share": 0.0513,
+      "avg_rating": 5.0,
+      "avg_score": 3.24,
+      "net_sentiment": 100.0
+    },
+    {
+      "term": "nice",
+      "review_count": 4,
+      "share": 0.0513,
+      "avg_rating": 5.0,
+      "avg_score": 3.21,
+      "net_sentiment": 100.0
+    },
+    {
+      "term": "delivered",
+      "review_count": 3,
+      "share": 0.0385,
+      "avg_rating": 4.67,
+      "avg_score": 2.97,
+      "net_sentiment": 100.0
+    },
+    {
+      "term": "market",
+      "review_count": 3,
+      "share": 0.0385,
+      "avg_rating": 3.67,
+      "avg_score": 1.7,
+      "net_sentiment": -33.3
+    },
+    {
+      "term": "order",
+      "review_count": 3,
+      "share": 0.0385,
+      "avg_rating": 5.0,
+      "avg_score": 2.94,
+      "net_sentiment": 100.0
+    },
+    {
+      "term": "perfect",
+      "review_count": 3,
+      "share": 0.0385,
+      "avg_rating": 5.0,
+      "avg_score": 3.26,
+      "net_sentiment": 100.0
+    },
+    {
+      "term": "cheez",
+      "review_count": 2,
+      "share": 0.0256,
+      "avg_rating": 5.0,
+      "avg_score": 3.05,
+      "net_sentiment": 100.0
+    }
+  ],
+  "reviews": [
+    {
+      "review_id": "78991414654821",
+      "rating": 5,
+      "text": "Cleaning:90percents Freshness:3 to 4 hours but es ka taste bilkul acha nhi Hy Fluoride Content:relief milta Hy",
+      "review_date": "2026-02-23T00:00:00Z",
+      "helpful_count": 0,
+      "score": 1.26,
+      "level": 1,
+      "confidence": 0.78,
+      "sentiment": "negative",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.54,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 1.54,
+          "level": 2,
+          "sentiment": "neutral"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.94,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Taste",
+          "score": 1.01,
+          "level": 1,
+          "sentiment": "negative"
+        }
+      ]
+    },
+    {
+      "review_id": "82444043154821",
+      "rating": 5,
+      "text": "good product is the same as displayed. Let's see how it performs, I will review it again with respect to medicated results after using, Packing was very poor. See pics attached. However, it is still recommended.",
+      "review_date": "2026-06-19T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.75,
+      "level": 3,
+      "confidence": 0.79,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Packaging",
+          "score": 1.01,
+          "level": 1,
+          "sentiment": "negative"
+        }
+      ]
+    },
+    {
+      "review_id": "82360080954821",
+      "rating": 5,
+      "text": "arrived safe but packaging was not upto the mark however reached without any leakage regarding product sensodyne is my only chioce i cant brush without sesodyne.",
+      "review_date": "2026-06-20T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.98,
+      "level": 3,
+      "confidence": 0.6,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Packaging",
+          "score": 1.12,
+          "level": 1,
+          "sentiment": "negative"
+        }
+      ]
+    },
+    {
+      "review_id": "76458858454821",
+      "rating": 5,
+      "text": "Fluoride Content:It is original, the price is less than the market and it was delivered on time.",
+      "review_date": "2025-11-07T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.96,
+      "level": 3,
+      "confidence": 0.96,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Value For Money",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "76512871454821",
+      "rating": 5,
+      "text": "COD tax should be removed so that price will be much lesser than market cleaning up",
+      "review_date": "2025-11-19T00:00:00Z",
+      "helpful_count": 0,
+      "score": 1.11,
+      "level": 1,
+      "confidence": 0.91,
+      "sentiment": "negative",
+      "features": [
+        {
+          "name": "Value For Money",
+          "score": 1.05,
+          "level": 1,
+          "sentiment": "negative"
+        }
+      ]
+    },
+    {
+      "review_id": "84193405954821",
+      "rating": 5,
+      "text": "Fluoride Content:wow Freshness: Cleaning:Fluoride Content:wow Freshness: Cleaning:",
+      "review_date": "2026-10-14T20:11:38.448225Z",
+      "helpful_count": 0,
+      "score": 2.35,
+      "level": 2,
+      "confidence": 0.68,
+      "sentiment": "neutral",
+      "features": []
+    },
+    {
+      "review_id": "84216280554821",
+      "rating": 5,
+      "text": "Texture: Scent: Cleansing:Texture: Scent: Cleansing:Texture: Scent: Cleansing:wow",
+      "review_date": "2026-10-14T20:11:38.448225Z",
+      "helpful_count": 0,
+      "score": 2.99,
+      "level": 3,
+      "confidence": 0.67,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "82041728554821",
+      "rating": 5,
+      "text": "I ordered two of them, and the quality and appearance of this product is good.",
+      "review_date": "2026-06-02T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.0,
+      "level": 3,
+      "confidence": 1.0,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "76889663054821",
+      "rating": 5,
+      "text": "good, well packed 👏 thank you so much I like it in less price excellent taste",
+      "review_date": "2025-11-26T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.05,
+      "level": 3,
+      "confidence": 0.96,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Taste",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Packaging",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Value For Money",
+          "score": 3.04,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "80575169154821",
+      "rating": 5,
+      "text": "Freshness:10/10 Cleaning:10/10 Fluoride Content:ismay fluoride ha",
+      "review_date": "2026-03-29T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.71,
+      "level": 3,
+      "confidence": 0.65,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.15,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.17,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 1.98,
+          "level": 2,
+          "sentiment": "neutral"
+        }
+      ]
+    },
+    {
+      "review_id": "74033419354821",
+      "rating": 5,
+      "text": "Fluoride Content:yess excellent. as the product is in large size.",
+      "review_date": "2025-09-09T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.1,
+      "level": 3,
+      "confidence": 0.91,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Fluoride Content",
+          "score": 3.11,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82249963354821",
+      "rating": 5,
+      "text": "Cleaning:perfect 10/10 Freshness:10/10 Fluoride Content:10/10",
+      "review_date": "2026-06-11T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.38,
+      "level": 3,
+      "confidence": 0.68,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.37,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.28,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.3,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "71272866354821",
+      "rating": 5,
+      "text": "Cleaning:Perfect Freshness:Perfect Fluoride Content:Perfect",
+      "review_date": "2025-05-27T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.35,
+      "level": 3,
+      "confidence": 0.7,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.36,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.26,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.24,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "84816446854821",
+      "rating": 5,
+      "text": "Cleaning:good Freshness:good Fluoride Content:good quality",
+      "review_date": "2026-10-11T20:11:38.448225Z",
+      "helpful_count": 0,
+      "score": 2.99,
+      "level": 3,
+      "confidence": 0.99,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "81184453454821",
+      "rating": 5,
+      "text": "getting Expensive day by day .... Need to find alternative",
+      "review_date": "2026-05-17T00:00:00Z",
+      "helpful_count": 0,
+      "score": 1.02,
+      "level": 1,
+      "confidence": 0.98,
+      "sentiment": "negative",
+      "features": [
+        {
+          "name": "Value For Money",
+          "score": 1.0,
+          "level": 1,
+          "sentiment": "negative"
+        }
+      ]
+    },
+    {
+      "review_id": "68978642154821",
+      "rating": 5,
+      "text": "Cleaning:good clean Freshness:best Fluoride Content:💯",
+      "review_date": "2025-03-12T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.64,
+      "level": 4,
+      "confidence": 0.71,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.05,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.86,
+          "level": 4,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.35,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "76928350354821",
+      "rating": 4,
+      "text": "Delivery was on time but its not effective as i expected.",
+      "review_date": "2025-12-16T00:00:00Z",
+      "helpful_count": 0,
+      "score": 1.02,
+      "level": 1,
+      "confidence": 0.97,
+      "sentiment": "negative",
+      "features": []
+    },
+    {
+      "review_id": "68519338254821",
+      "rating": 5,
+      "text": "mashallah behtareen products he thanks daraz and seller",
+      "review_date": "2025-02-27T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.64,
+      "level": 4,
+      "confidence": 0.71,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "76487086554821",
+      "rating": 5,
+      "text": "Fluoride Content:8/10 Freshness:9/10 Cleaning:8/10",
+      "review_date": "2025-11-11T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.89,
+      "level": 3,
+      "confidence": 0.9,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.89,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 2.96,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.74,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "70607375154821",
+      "rating": 5,
+      "text": "time per mil gaya order or packaging bhi Sahi thi.",
+      "review_date": "2025-05-07T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.9,
+      "level": 3,
+      "confidence": 0.92,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Packaging",
+          "score": 2.97,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "78997797954821",
+      "rating": 5,
+      "text": "Good ..... always recommended. Delivery on time",
+      "review_date": "2026-01-28T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.07,
+      "level": 3,
+      "confidence": 0.93,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "80494773254821",
+      "rating": 5,
+      "text": "bohat kamal ki product ha sub ko leni chahiye",
+      "review_date": "2026-03-30T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.99,
+      "level": 4,
+      "confidence": 1.0,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "69410254854821",
+      "rating": 5,
+      "text": "sensodyne is very nice product 💯 recommend",
+      "review_date": "2025-04-04T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.74,
+      "level": 4,
+      "confidence": 0.78,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "80607972354821",
+      "rating": 5,
+      "text": "bohat kamal ki product ha sub ko leni chahiye",
+      "review_date": "2026-03-30T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.99,
+      "level": 4,
+      "confidence": 0.99,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "69355454354821",
+      "rating": 5,
+      "text": "the product is original and delivered on time",
+      "review_date": "2025-03-22T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.99,
+      "level": 3,
+      "confidence": 0.99,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "81297293254821",
+      "rating": 5,
+      "text": "Cleaning:ok Freshness:ok Fluoride Content:ok",
+      "review_date": "2026-04-28T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.92,
+      "level": 3,
+      "confidence": 0.93,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.93,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 2.92,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.89,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "79739890554821",
+      "rating": 5,
+      "text": "achi product hai feel free for order thanks",
+      "review_date": "2026-03-05T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.93,
+      "level": 3,
+      "confidence": 0.22,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "82471742454821",
+      "rating": 5,
+      "text": "Received on time. Well packed. Recommended.",
+      "review_date": "2026-06-20T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.07,
+      "level": 3,
+      "confidence": 0.94,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Packaging",
+          "score": 3.06,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "80784894254821",
+      "rating": 5,
+      "text": "good nice excellent 👍 boht achi hay paste",
+      "review_date": "2026-05-05T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.09,
+      "level": 3,
+      "confidence": 0.92,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "82002043754821",
+      "rating": 5,
+      "text": "bohat achi paste hai daraz shukriya apka",
+      "review_date": "2026-06-01T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.05,
+      "level": 3,
+      "confidence": 0.95,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Taste",
+          "score": 3.06,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82966507954821",
+      "rating": 4,
+      "text": "good product is original and delivered",
+      "review_date": "2026-07-14T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.97,
+      "level": 3,
+      "confidence": 0.98,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "82499457554821",
+      "rating": 5,
+      "text": "bohat kamal ki ha sub ko leni chahitye",
+      "review_date": "2026-06-23T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.9,
+      "level": 4,
+      "confidence": 0.92,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "82465661754821",
+      "rating": 5,
+      "text": "bohat kamal ki ha sub ko leni chahitye",
+      "review_date": "2026-06-23T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.93,
+      "level": 4,
+      "confidence": 0.97,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "75433636854821",
+      "rating": 5,
+      "text": "Fluoride Content: orignal price is low",
+      "review_date": "2025-10-03T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.31,
+      "level": 2,
+      "confidence": 0.43,
+      "sentiment": "neutral",
+      "features": [
+        {
+          "name": "Value For Money",
+          "score": 2.66,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "80769282954821",
+      "rating": 5,
+      "text": "bohat kamal ka ha sub ko lena chahiye",
+      "review_date": "2026-04-05T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.93,
+      "level": 4,
+      "confidence": 0.96,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "80769464554821",
+      "rating": 5,
+      "text": "bohat kamal ka ha sub ko lena chahiye",
+      "review_date": "2026-04-05T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.93,
+      "level": 4,
+      "confidence": 0.96,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "82090494454821",
+      "rating": 5,
+      "text": "bohat kamal ki ha sub ko leni chahiye",
+      "review_date": "2026-06-06T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.94,
+      "level": 4,
+      "confidence": 0.97,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "83496821354821",
+      "rating": 5,
+      "text": "qjajajansjsshxuxjsjsisjjsnsjsjn",
+      "review_date": "2026-08-11T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.04,
+      "level": 2,
+      "confidence": 0.92,
+      "sentiment": "neutral",
+      "features": []
+    },
+    {
+      "review_id": "84120996954821",
+      "rating": 5,
+      "text": "kvfifixojfzltstzoohsdkficcikgkx",
+      "review_date": "2026-09-07T00:00:00Z",
+      "helpful_count": 0,
+      "score": 1.96,
+      "level": 2,
+      "confidence": 0.97,
+      "sentiment": "neutral",
+      "features": []
+    },
+    {
+      "review_id": "69069378254821",
+      "rating": 5,
+      "text": "looks good. will check.",
+      "review_date": "2025-03-16T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.7,
+      "level": 3,
+      "confidence": 0.75,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "64567533854821",
+      "rating": 5,
+      "text": "achi hy",
+      "review_date": "2024-12-06T00:00:00Z",
+      "helpful_count": 0,
+      "score": 1.95,
+      "level": 2,
+      "confidence": 0.87,
+      "sentiment": "neutral",
+      "features": []
+    },
+    {
+      "review_id": "79476388754821",
+      "rating": 5,
+      "text": "Freshness:may be very good Fluoride Content:good still not used Cleaning:good discounted price",
+      "review_date": "2026-02-14T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.96,
+      "level": 3,
+      "confidence": 0.97,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.83,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Value For Money",
+          "score": 2.93,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82506629054821",
+      "rating": 5,
+      "text": "Freshness:10 Cleaning:10 Fluoride Content:10 Good product in this reasonable price",
+      "review_date": "2026-06-29T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.03,
+      "level": 3,
+      "confidence": 0.97,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.06,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.04,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Value For Money",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "81507210354821",
+      "rating": 5,
+      "text": "Cleaning:very good Freshness:very good Fluoride Content:very good thanks",
+      "review_date": "2026-06-11T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.01,
+      "level": 3,
+      "confidence": 0.99,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82466835854821",
+      "rating": 5,
+      "text": "Cleaning:very good Freshness:very good Fluoride Content:very good thanks",
+      "review_date": "2026-06-21T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.01,
+      "level": 3,
+      "confidence": 0.99,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "81507210554821",
+      "rating": 5,
+      "text": "Cleaning:very good Freshness:very good Fluoride Content:very good thanks",
+      "review_date": "2026-06-09T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.01,
+      "level": 3,
+      "confidence": 0.99,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82466680354821",
+      "rating": 5,
+      "text": "Cleaning:very good Freshness:very good Fluoride Content:very good thanks",
+      "review_date": "2026-06-21T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.01,
+      "level": 3,
+      "confidence": 0.99,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82466757754821",
+      "rating": 5,
+      "text": "Cleaning:very good Freshness:very good Fluoride Content:very good",
+      "review_date": "2026-06-25T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.01,
+      "level": 3,
+      "confidence": 0.98,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "69736565254821",
+      "rating": 5,
+      "text": "Fluoride Content: Fast Delivery. Recommended to purcahse from daraz",
+      "review_date": "2025-04-11T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.09,
+      "level": 3,
+      "confidence": 0.84,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "80607569854821",
+      "rating": 5,
+      "text": "Cleaning:good Freshness:good original product same as thank you",
+      "review_date": "2026-04-17T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.0,
+      "level": 3,
+      "confidence": 1.0,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "76034803254821",
+      "rating": 5,
+      "text": "Cleaning:perfect Freshness:so refreshing, very nice experience",
+      "review_date": "2025-12-10T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.06,
+      "level": 3,
+      "confidence": 0.95,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.14,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.08,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82050078754821",
+      "rating": 5,
+      "text": "Cleaning:very good Freshness:very good Fluoride Content:good",
+      "review_date": "2026-06-09T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.0,
+      "level": 3,
+      "confidence": 1.0,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.01,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.02,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "74538745754821",
+      "rating": 5,
+      "text": "Freshness:good Cleaning:good same as show thank you draaz",
+      "review_date": "2025-09-04T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.0,
+      "level": 3,
+      "confidence": 0.97,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "79031016554821",
+      "rating": 5,
+      "text": "Cleaning:good Freshness:good Fluoride Content:good a",
+      "review_date": "2026-02-03T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.99,
+      "level": 3,
+      "confidence": 0.99,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82938738854821",
+      "rating": 5,
+      "text": "Cleaning:good Freshness:amazing Fluoride Content:good",
+      "review_date": "2026-07-25T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.05,
+      "level": 3,
+      "confidence": 0.96,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.37,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "79143284954821",
+      "rating": 5,
+      "text": "Good Seller. Reasonable price. Recieved order on time",
+      "review_date": "2026-02-10T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.99,
+      "level": 3,
+      "confidence": 0.99,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Value For Money",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "83042726554821",
+      "rating": 5,
+      "text": "Cleaning:ok Freshness:good Fluoride Content:ok",
+      "review_date": "2026-07-25T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.92,
+      "level": 3,
+      "confidence": 0.93,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.76,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 2.98,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.67,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82498803154821",
+      "rating": 5,
+      "text": "Cleaning:10 Freshness:10 Fluoride Content:10",
+      "review_date": "2026-06-24T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.15,
+      "level": 3,
+      "confidence": 0.77,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 3.1,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.1,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 3.12,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82298766654821",
+      "rating": 1,
+      "text": "expensive than market due to delivery charges.",
+      "review_date": "2026-06-12T00:00:00Z",
+      "helpful_count": 0,
+      "score": 1.03,
+      "level": 1,
+      "confidence": 0.97,
+      "sentiment": "negative",
+      "features": [
+        {
+          "name": "Value For Money",
+          "score": 1.02,
+          "level": 1,
+          "sentiment": "negative"
+        }
+      ]
+    },
+    {
+      "review_id": "82822358254821",
+      "rating": 5,
+      "text": "Cleaning:9 Freshness:10 Fluoride Content:8",
+      "review_date": "2026-07-16T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.99,
+      "level": 3,
+      "confidence": 0.88,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.8,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Freshness",
+          "score": 3.27,
+          "level": 3,
+          "sentiment": "positive"
+        },
+        {
+          "name": "Fluoride Content",
+          "score": 2.86,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "82579718454821",
+      "rating": 5,
+      "text": "good product original product Fast delivery",
+      "review_date": "2026-06-28T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.0,
+      "level": 3,
+      "confidence": 1.0,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "76077091954821",
+      "rating": 5,
+      "text": "Excellent Product, highly recommended",
+      "review_date": "2025-11-26T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.71,
+      "level": 4,
+      "confidence": 0.76,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "79701942054821",
+      "rating": 5,
+      "text": "jice product. zabardast . Masha Allah",
+      "review_date": "2026-02-25T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.47,
+      "level": 3,
+      "confidence": 0.61,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "81617954854821",
+      "rating": 5,
+      "text": "bohat achi cheez hai daraz shukriya",
+      "review_date": "2026-05-13T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.05,
+      "level": 3,
+      "confidence": 0.95,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "81598767354821",
+      "rating": 5,
+      "text": "bohat achi cheez hai daraz shukriya",
+      "review_date": "2026-05-13T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.05,
+      "level": 3,
+      "confidence": 0.96,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "69469435454821",
+      "rating": 5,
+      "text": "orignal e hogi ..use ni ki abi",
+      "review_date": "2025-03-25T00:00:00Z",
+      "helpful_count": 0,
+      "score": 1.68,
+      "level": 2,
+      "confidence": 0.52,
+      "sentiment": "neutral",
+      "features": []
+    },
+    {
+      "review_id": "82157958354821",
+      "rating": 5,
+      "text": "same product mli hy thanks 👍",
+      "review_date": "2026-06-07T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.4,
+      "level": 2,
+      "confidence": 0.62,
+      "sentiment": "neutral",
+      "features": []
+    },
+    {
+      "review_id": "75659080154821",
+      "rating": 5,
+      "text": "original product received",
+      "review_date": "2025-10-16T00:00:00Z",
+      "helpful_count": 0,
+      "score": 1.99,
+      "level": 2,
+      "confidence": 0.97,
+      "sentiment": "neutral",
+      "features": []
+    },
+    {
+      "review_id": "76749881854821",
+      "rating": 5,
+      "text": "Freshness:good 👍",
+      "review_date": "2025-11-15T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.0,
+      "level": 3,
+      "confidence": 1.0,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Freshness",
+          "score": 3.0,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "79038316254821",
+      "rating": 5,
+      "text": "Cleaning:nice",
+      "review_date": "2026-02-02T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.93,
+      "level": 3,
+      "confidence": 0.93,
+      "sentiment": "positive",
+      "features": [
+        {
+          "name": "Cleaning",
+          "score": 2.99,
+          "level": 3,
+          "sentiment": "positive"
+        }
+      ]
+    },
+    {
+      "review_id": "83377332254821",
+      "rating": 5,
+      "text": "good",
+      "review_date": "2026-08-11T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.98,
+      "level": 3,
+      "confidence": 0.98,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "70695557754821",
+      "rating": 5,
+      "text": "Good",
+      "review_date": "2025-05-09T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.97,
+      "level": 3,
+      "confidence": 0.97,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "79525450854821",
+      "rating": 5,
+      "text": "great",
+      "review_date": "2026-02-18T00:00:00Z",
+      "helpful_count": 0,
+      "score": 3.01,
+      "level": 3,
+      "confidence": 0.98,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "79525543154821",
+      "rating": 5,
+      "text": "a1",
+      "review_date": "2026-02-18T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.24,
+      "level": 2,
+      "confidence": 0.78,
+      "sentiment": "neutral",
+      "features": []
+    },
+    {
+      "review_id": "71575845954821",
+      "rating": 5,
+      "text": "Good",
+      "review_date": "2025-06-10T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.98,
+      "level": 3,
+      "confidence": 0.98,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "79525450654821",
+      "rating": 5,
+      "text": "a1",
+      "review_date": "2026-02-18T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.26,
+      "level": 2,
+      "confidence": 0.75,
+      "sentiment": "neutral",
+      "features": []
+    },
+    {
+      "review_id": "82739705854821",
+      "rating": 5,
+      "text": "Good",
+      "review_date": "2026-07-04T00:00:00Z",
+      "helpful_count": 0,
+      "score": 2.98,
+      "level": 3,
+      "confidence": 0.98,
+      "sentiment": "positive",
+      "features": []
+    },
+    {
+      "review_id": "82455429054821",
+      "rating": 2,
+      "text": "delivery rider buhat ziada badtamez hai..",
+      "review_date": "2026-07-30T00:00:00Z",
+      "helpful_count": 0,
+      "score": 0.1,
+      "level": 0,
+      "confidence": 0.93,
+      "sentiment": "negative",
+      "features": []
+    }
+  ],
+  "stats": {
+    "reviews_scraped": 78,
+    "reviews_analysed": 78,
+    "reviews_scored": 78,
+    "unprocessed_reviews": 0,
+    "partial": false,
+    "used_fallback_features": false,
+    "jev_model": "jev-1.14.0",
+    "input_tokens": null
+  }
+}
