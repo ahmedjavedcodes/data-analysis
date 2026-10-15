@@ -6,9 +6,11 @@ Central guide, memory, and coding standard for this repository. Read this before
 
 ## 1. Project Overview
 
-**Daraz AI Review Analyzer** takes a Daraz.pk product URL, scrapes the product and **all** of its reviews, uses a Groq-hosted LLM to generate product-specific feature categories (e.g. Camera, Battery, Value for Money for a phone), and then runs every review through **JEV** (JSON Evaluator/Router) to map it to those features with a per-feature sentiment and star rating. The results are aggregated (EDA) and shown in a Next.js dashboard as feature-level insights: how many reviewers mentioned each feature and its average rating.
+**Daraz AI Review Analyzer** takes a Daraz.pk product URL, scrapes the product and **all** of its reviews, uses a Groq-hosted LLM to generate product-specific feature categories (e.g. Camera, Battery, Value for Money for a phone), and scores every review with **Jev**, TypeSafe's decision model, on a 5-level sentiment rubric (Hostile → Enthusiastic). The results are aggregated (EDA) and shown in a Next.js dashboard: net sentiment, score distribution, recency windows, monthly trend, common terms, and the review feed with each review's score.
 
-**Core value:** turn hundreds of unstructured reviews into a "what do buyers actually think about each feature" breakdown in seconds.
+**Core value:** turn hundreds of unstructured reviews into "how do buyers feel, and is it getting better or worse" in seconds.
+
+> Reviews are not yet mapped to the generated feature categories (see §8).
 
 ---
 
@@ -20,7 +22,7 @@ Central guide, memory, and coding standard for this repository. Read this before
 │  (URL input, │                          │ 2. Scrape product + paginated reviews  (Playwright → BeautifulSoup)     │
 │  dashboard)  │ ◀─── SSE progress ────── │ 3. Clean & normalize                                                    │
 │              │ ◀─── AnalysisResult ──── │ 4. Generate feature categories        (Groq LLM, structured output)     │
-└──────────────┘                          │ 5. Batch reviews → JEV (parallel)     (Groq LLM, Pydantic-validated)    │
+└──────────────┘                          │ 5. Score reviews → Jev (parallel)     (TypeSafe Jev, Score question)    │
                                           │ 6. EDA / aggregation                  (pandas, pure functions)          │
                                           │ 7. Return AnalysisResult JSON                                           │
                                           └─────────────────────────────────────────────────────────────────────────┘
@@ -34,8 +36,8 @@ Central guide, memory, and coding standard for this repository. Read this before
 | 2 | Scraping | `app/scraper/` | `DarazProductRef` → `RawProduct` + `list[RawReview]` |
 | 3 | Cleaning (pandas) | `app/pipeline/cleaning.py` | `raw_reviews.csv` → `clean_reviews.csv` |
 | 4 | Feature generation | `app/llm/feature_generator.py` | `Product` → `FeatureSet` (4–8 features + `Overall`) |
-| 5 | JEV batch processing | `app/llm/jev/` | `clean_reviews.csv` rows → `JEVReviewInput` batches → `jev_mentions.csv` |
-| 6 | EDA / aggregation (pandas) | `app/pipeline/aggregation.py` | `jev_mentions.csv` + `clean_reviews.csv` → `feature_summary.csv` + `AnalysisResult` |
+| 5 | Jev scoring | `app/llm/jev/` | `clean_reviews.csv` rows → `JEVReviewInput` → one Score request each → `jev_scores.csv` |
+| 6 | EDA / aggregation (pandas) | `app/pipeline/aggregation.py` | `jev_scores.csv` + `clean_reviews.csv` → `AnalysisResult` (`analysis.json`) |
 | 7 | UI rendering | `frontend/` | `AnalysisResult` → dashboard |
 
 ### Stage details
@@ -47,19 +49,19 @@ Central guide, memory, and coding standard for this repository. Read this before
 2. **Scraping** — Playwright (async, Chromium, headless) renders the PDP. Extract product name, category breadcrumb, price, overall rating, total rating count, and rating distribution.
    For reviews, **prefer the JSON review endpoint the page itself calls** (intercept it via Playwright network listeners, then page through it with `httpx` using the same cookies/headers). Fall back to clicking the review pagination control and parsing the DOM with BeautifulSoup only if the endpoint is unavailable. Stop when a page returns no new reviews, the reported total is reached, or `MAX_REVIEW_PAGES` is hit. The exact endpoint and parameters must be confirmed against live Daraz traffic and recorded in `app/scraper/README.md`, since Daraz can change them.
 
-3. **Cleaning (pandas)** — The scraper writes every review to `raw_reviews.csv`; `clean_reviews(df: pd.DataFrame) -> pd.DataFrame` loads it and applies vectorized steps: strip HTML (`str.replace` regex), normalize Unicode (`str.normalize("NFKC")`) and whitespace, drop empty rows and duplicates (`drop_duplicates(subset=["review_id"])`, then on `["text_norm", "rating"]`), coerce ratings with `pd.to_numeric(...).clip(1, 5).astype("Int64")`, parse dates with `pd.to_datetime(..., utc=True, errors="coerce")`. Keep Roman Urdu / Urdu text as-is (the LLM handles it) and keep the original in `raw_text`. Output: `clean_reviews.csv`.
+3. **Cleaning (pandas)** — The scraper writes every review to `raw_reviews.csv`; `clean_reviews(df: pd.DataFrame) -> pd.DataFrame` loads it and applies vectorized steps: strip HTML (`str.replace` regex), normalize Unicode (`str.normalize("NFKC")`) and whitespace, drop empty rows and duplicates by `review_id` **only** (identical texts from different buyers are separate reviews; DOM-fallback ids carry a per-page occurrence number so they stay unique), coerce ratings with `pd.to_numeric(...).clip(1, 5).astype("Int64")`, parse dates with `pd.to_datetime(..., utc=True, errors="coerce")`. Keep Roman Urdu / Urdu text as-is (the LLM handles it) and keep the original in `raw_text`. Output: `clean_reviews.csv`.
 
 4. **Feature generation (Groq)** — One LLM call with product name + breadcrumb category + a sample of ~20 reviews. Returns a `FeatureSet` of 4–8 concise, non-overlapping feature names with one-line descriptions. `Overall` is always appended by code (never trust the LLM to include it). Cache by `item_id` (TTL 24h).
 
-5. **JEV (JSON Evaluator/Router)** — Our internal component that, for each review, decides which features it mentions and the sentiment + 1–5 rating per feature.
-   - Reviews mentioning several features map to **each** of them ("great camera but slow processor" → Camera: positive/5, Processor: negative/2).
-   - Generic reviews ("good product", "nice") route to **Overall**, using the reviewer's star rating.
-   - Features not in the `FeatureSet` are never invented; unknown mentions route to `Overall`.
-   - Implemented as a LangGraph graph: `route → evaluate → validate → (repair | accept)`. Output is validated against Pydantic models; on failure it goes through the repair path (see §5).
+5. **Jev scoring** — [TypeSafe Jev](https://docs.typesafe.ai/api) is a decision model, not a generative LLM: no chat endpoint, no system prompt, no JSON to parse.
+   - Each review is one `POST {JEV_BASE_URL}/systemone` request: `state` = review text, plus one Score question whose `criteria` are the 5 levels in `app/llm/prompts/jev_sentiment_v1.json` (Hostile, Negative, Neutral, Positive, Enthusiastic).
+   - Jev returns a probability-weighted `score` on the **0-based** level index (0.0–4.0), plus per-level probabilities and a confidence. The score is stored per review in `jev_scores.csv` and returned on every review in `AnalysisResult`.
+   - The direct API uses bare model ids (`jev-1.14.0`; `GET /v1/models` lists aliases). `typesafe/jev-1.14` is the OpenRouter form and needs an OpenRouter key.
+   - No retries: a failed request leaves that review unscored (counted as unprocessed). A rejected key, or no review scored at all, raises `LLM_UNAVAILABLE`.
 
-6. **EDA / aggregation** — Pure, deterministic functions (no LLM). Per feature: `mention_count`, `mention_share` (% of reviews), `avg_rating`, sentiment breakdown (positive/neutral/negative), and 2–3 representative quotes. Also: overall rating distribution, total reviews analysed vs. scraped, and the count of reviews that failed JEV.
+6. **EDA / aggregation** — Pure, deterministic functions (no model calls). Definitions in `docs/decisions/0001-jev-sentiment-metrics.md`. Reviews map to sentiment by nearest level (0–1 negative, 2 neutral, 3–4 positive). Outputs: average score, net sentiment (% positive − % negative of scored reviews), level counts, 7/30/90-day and all-time windows, monthly trend (empty months kept), top terms with their average score, the analysed reviews' star distribution, and the review feed. Star ratings are reported alongside but never substituted for a missing score.
 
-7. **UI** — Product header card, overall rating summary, feature cards sorted by `mention_count`, bar chart of average rating per feature, sentiment breakdown, and expandable example quotes. Progress is streamed via Server-Sent Events while the pipeline runs.
+7. **UI** — Product header, KPI row (net sentiment, average Jev score, recency windows, positive/neutral/negative counts), score-level distribution, monthly score trend, term frequency coloured by average score, and the review feed pairing stars with each review's Jev score. Progress is streamed via Server-Sent Events while the pipeline runs.
 
 ### Data flow & run files (pandas + CSV)
 
@@ -70,9 +72,10 @@ backend/data/runs/<item_id>_<YYYYmmdd-HHMMSS>/
 ├── product.json          # one product's metadata (name, category, ratings) — not tabular, so JSON
 ├── raw_reviews.csv       # scraper output, untouched
 ├── clean_reviews.csv     # after pandas cleaning
-├── features.json         # FeatureSet from Groq
-├── jev_mentions.csv      # JEV output, long format: ONE ROW PER (review, feature) MENTION
-└── feature_summary.csv   # pandas groupby result used to build AnalysisResult
+├── run_meta.json         # scraped_at, reviews_scraped, partial — scrape facts no CSV carries
+├── features.json         # FeatureGenerationOutcome from Groq
+├── jev_scores.csv        # Jev output: ONE ROW PER REVIEW sent to Jev
+└── analysis.json         # the AnalysisResult returned by the API
 ```
 
 CSV columns (keep these names stable; they are the contract between stages):
@@ -80,11 +83,9 @@ CSV columns (keep these names stable; they are the contract between stages):
 | File | Columns |
 |------|---------|
 | `raw_reviews.csv` / `clean_reviews.csv` | `review_id, rating, text, raw_text, review_date, sku_info, helpful_count` |
-| `jev_mentions.csv` | `review_id, feature, sentiment, rating, evidence, source (llm/fallback), batch_id, prompt_version` |
-| `feature_summary.csv` | `feature, mention_count, mention_share, avg_rating, positive, neutral, negative` |
+| `jev_scores.csv` | `review_id, score (0–4), level (nearest), confidence, model, rubric_version` |
 
-- A review that mentions 3 features produces 3 rows in `jev_mentions.csv`; this keeps it flat for pandas (`groupby("feature")`) instead of nesting lists in a cell.
-- `mention_share` = unique `review_id`s per feature ÷ total rows in `clean_reviews.csv`.
+- `score`, `level` and `confidence` are empty for a review whose Jev request failed; aggregation treats it as unscored.
 
 ---
 
@@ -107,11 +108,11 @@ CSV columns (keep these names stable; they are the contract between stages):
 │   │   ├── llm/
 │   │   │   ├── groq_client.py
 │   │   │   ├── feature_generator.py
-│   │   │   ├── prompts/          # versioned prompt templates
-│   │   │   └── jev/              # graph.py, nodes.py, repair.py
-│   │   └── pipeline/             # cleaning, batching, aggregation, orchestrator
+│   │   │   ├── prompts/          # versioned prompt + Jev rubric files
+│   │   │   └── jev/              # client.py (System One API), runner.py (bounded scoring)
+│   │   └── pipeline/             # io, cleaning, jev_inputs, aggregation, orchestrator
 │   ├── data/runs/                # per-run CSV/JSON files (git-ignored)
-│   ├── scripts/                  # run_scraper.py, run_clean.py, run_jev.py (isolated runs)
+│   ├── scripts/                  # run_scraper/clean/features/jev/aggregate.py (isolated runs)
 │   └── tests/
 │       ├── fixtures/             # saved HTML + JSON review pages, LLM outputs
 │       ├── unit/
@@ -133,16 +134,17 @@ CSV columns (keep these names stable; they are the contract between stages):
 ### Prerequisites
 - Python 3.12+, [`uv`](https://docs.astral.sh/uv/)
 - Node.js 20+, `pnpm` (preferred) or `npm`
-- A Groq API key
+- A Groq API key (feature categories) and a TypeSafe API key (Jev scoring)
 
 ### Environment
 `backend/.env` (copy from `.env.example`; never commit real keys):
 ```
 GROQ_API_KEY=
-GROQ_MODEL_FEATURES=llama-3.3-70b-versatile
-GROQ_MODEL_JEV=llama-3.1-8b-instant
-JEV_BATCH_SIZE=10
-JEV_MAX_CONCURRENCY=5
+GROQ_MODEL_FEATURES=openai/gpt-oss-120b
+JEV_API_KEY=
+JEV_BASE_URL=https://api.typesafe.ai/v1
+JEV_MODEL=jev-1.14.0
+JEV_MAX_CONCURRENCY=10
 SCRAPER_HEADLESS=true
 SCRAPER_MIN_DELAY_S=1.0
 SCRAPER_MAX_DELAY_S=2.5
@@ -153,7 +155,7 @@ CORS_ORIGINS=http://localhost:3000
 ```
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 ```
-> Model names are defaults; check Groq's current model list before relying on them.
+> Model names are defaults; check them before relying on them. Groq retired the Llama defaults by 2026-10 (`groq.Groq().models.list()`); Jev's ids are at `GET {JEV_BASE_URL}/models`.
 
 ### Backend
 ```bash
@@ -178,9 +180,10 @@ pnpm typecheck      # tsc --noEmit
 ### Run stages in isolation
 ```bash
 cd backend
-# Scrape only → creates data/runs/<run>/product.json + raw_reviews.csv
+# Scrape only → creates data/runs/<run>/product.json + raw_reviews.csv + run_meta.json
 uv run python -m scripts.run_scraper "<daraz-url>" --max-pages 3
 uv run python -m scripts.run_scraper "<daraz-url>" --headed          # watch the browser
+uv run python -m scripts.run_scraper "<daraz-url>" --reviews-from dom # force the click fallback
 
 # Clean only → clean_reviews.csv
 uv run python -m scripts.run_clean --run data/runs/<run>
@@ -188,10 +191,10 @@ uv run python -m scripts.run_clean --run data/runs/<run>
 # Feature generation only → features.json
 uv run python -m scripts.run_features --run data/runs/<run>
 
-# JEV only → jev_mentions.csv (limit for cheap test runs)
+# Jev scoring only → jev_scores.csv (limit for cheap test runs)
 uv run python -m scripts.run_jev --run data/runs/<run> --limit 30
 
-# Aggregation only → feature_summary.csv
+# Aggregation only → analysis.json
 uv run python -m scripts.run_aggregate --run data/runs/<run>
 ```
 
@@ -199,7 +202,7 @@ uv run python -m scripts.run_aggregate --run data/runs/<run>
 ```bash
 # backend
 uv run ruff check . && uv run ruff format --check .
-uv run mypy app
+uv run mypy app scripts
 uv run pytest -m "not live"
 
 # frontend
@@ -218,61 +221,41 @@ pnpm lint && pnpm typecheck && pnpm test
 
 ### 5.2 Python typing
 - Python 3.12 syntax (`list[str]`, `X | None`). `mypy --strict` on `app/`.
-- **Every boundary is a Pydantic v2 model or a schema-checked DataFrame**: LLM inputs/outputs and API request/response are Pydantic; tabular stages (raw → clean → mentions → summary) are pandas DataFrames saved as CSV. No bare `dict` crossing module boundaries.
+- **Every boundary is a Pydantic v2 model or a schema-checked DataFrame**: LLM inputs/outputs and API request/response are Pydantic; tabular stages (raw → clean → jev_scores) are pandas DataFrames saved as CSV. No bare `dict` crossing module boundaries.
 - **pandas + CSV rules**:
-  - Read and write through one module, `app/pipeline/io.py` (`read_reviews`, `write_reviews`, `read_mentions`, …) — never call `pd.read_csv` ad hoc.
-  - Always pass explicit `dtype` on read (`review_id` is **`str`**, never int — leading zeros and long IDs break), and `parse_dates` for date columns.
+  - Read and write through one module, `app/pipeline/io.py` (`read_clean_reviews`, `write_scores`, `read_run_meta`, …) — never call `pd.read_csv` ad hoc.
+  - Always pass explicit `dtype` on read (`review_id` is **`str`**, never int — leading zeros and long IDs break). Parse dates with `pd.to_datetime(..., utc=True, format="ISO8601")`: without `format`, pandas infers it from the first row and silently turns rows with fractional seconds into NaT.
   - Write with `encoding="utf-8"` and `index=False`; use `utf-8-sig` only for exports meant to be opened in Excel (keeps Urdu text readable).
   - Validate each DataFrame's columns and types on load with a `pandera` schema (or a `REQUIRED_COLUMNS` check) so a broken CSV fails loudly.
-  - DataFrame → JEV: convert rows with `JEVReviewInput.model_validate(row)` over `df.to_dict("records")`; JEV output → DataFrame: flatten `JEVReviewResult` to one row per mention before writing.
+  - DataFrame → Jev: convert rows with `JEVReviewInput.model_validate(row)` over `df.to_dict("records")` (`app/pipeline/jev_inputs.py`); Jev output → one `jev_scores.csv` row per review.
+  - Iterate rows with `to_dict("records")`, not `itertuples()` (pandas-stubs types `itertuples` fields as a broad union that fails `mypy --strict`).
   - Cleaning and aggregation functions are pure: DataFrame in, new DataFrame out, no in-place mutation of the input, no file I/O inside them.
 - Use `Literal`/`Enum` for closed sets, `Field(ge=1, le=5)` for ratings, `model_config = ConfigDict(extra="forbid")` on all LLM output models so hallucinated keys fail validation.
 
-Reference JEV models:
+Reference models (`app/models/jev.py`, `app/llm/jev/client.py`):
 ```python
-from typing import Literal
-from pydantic import BaseModel, ConfigDict, Field
-
-Sentiment = Literal["positive", "neutral", "negative"]
-
-class Feature(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    name: str = Field(min_length=1, max_length=40)
-    description: str
-
-class FeatureSet(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+class FeatureSet(BaseModel):            # Groq output, extra="forbid"
     product_category: str
-    features: list[Feature] = Field(min_length=1, max_length=9)
+    features: list[Feature] = Field(min_length=1, max_length=9)   # Feature(name, description)
 
-class JEVReviewInput(BaseModel):
+class JEVReviewInput(BaseModel):        # one review sent to Jev
     review_id: str
     text: str
     star_rating: int = Field(ge=1, le=5)
 
-class JEVBatchInput(BaseModel):
-    batch_id: int
-    features: list[str]            # allowed feature names, incl. "Overall"
-    reviews: list[JEVReviewInput]
+class ScoreRubric(BaseModel):           # loaded from prompts/jev_sentiment_v1.json
+    version: str
+    question_id: str
+    instructions: str
+    criteria: list[str] = Field(min_length=2, max_length=10)   # level 0 .. level n-1
 
-class FeatureMention(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    feature: str                   # must be in JEVBatchInput.features (checked post-parse)
-    sentiment: Sentiment
-    rating: int = Field(ge=1, le=5)
-    evidence: str = Field(max_length=200)   # short quote from the review
-
-class JEVReviewResult(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    review_id: str
-    mentions: list[FeatureMention] = Field(min_length=1)
-
-class JEVBatchOutput(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    batch_id: int
-    results: list[JEVReviewResult]
+class ScoreAnswer(BaseModel):           # Jev response: answers[question_id]
+    type: Literal["score"]
+    score: float                        # probability-weighted level index, 0-based
+    confidence: float
+    probabilities: dict[str, float]
 ```
-- After parsing, run a **semantic validator**: every `review_id` in input appears exactly once in output; every `feature` is in the allowed list; generic reviews have exactly one `Overall` mention.
+- Jev responses are parsed as typed API JSON (an unexpected shape raises `JEVRequestError`); there is no LLM-text parsing or repair step.
 
 ### 5.3 TypeScript
 - `"strict": true`, `noUncheckedIndexedAccess: true`. No `any`; use `unknown` + narrowing.
@@ -291,15 +274,12 @@ class JEVBatchOutput(BaseModel):
 - Selectors live in **one** file (`app/scraper/selectors.py`) so DOM changes are a one-file fix.
 - Cache scrape results by `item_id` (default 6h) to avoid re-hitting Daraz during development.
 
-### 5.5 Async LLM batch processing
-- All Groq calls go through `app/llm/groq_client.py` (async client, shared instance, central retries and timeouts).
-- Batch reviews into groups of `JEV_BATCH_SIZE` (default 10; keep prompt + output under the model's context and Groq's per-request token limits). Truncate individual reviews over ~1,000 characters.
-- Run batches with `asyncio.TaskGroup` gated by an `asyncio.Semaphore(JEV_MAX_CONCURRENCY)`. Never fire unbounded `gather` over all batches.
-- Respect Groq rate limits: on 429 back off using `retry-after` / rate-limit headers; reduce effective concurrency adaptively if 429s repeat.
-- Use JSON mode / structured outputs (`response_format={"type": "json_object"}` or LangChain `with_structured_output(...)`), `temperature=0` for JEV, low temperature (~0.3) for feature generation.
-- One failed batch must **not** fail the job: retry → split batch in half → finally mark those reviews `unprocessed` and continue.
-- Prompts are versioned files in `app/llm/prompts/` (e.g. `jev_v1.md`); include the version in logs and results.
-- Track and log per-job token usage and latency.
+### 5.5 Model calls: Groq (categories) and Jev (review scoring)
+- **Groq is used only for feature generation**: one call per product through `app/llm/groq_client.py` (shared instance, central timeout and retries), `with_structured_output(FeatureSet)`, temperature ~0.3. Review classification never goes to Groq. A Groq-based JEV attempt hit this tier's 8,000 tokens/min limit on 3 of 8 batches.
+- **Jev scores reviews**: one Score request per review through `app/llm/jev/client.py`, run with `asyncio.TaskGroup` gated by `asyncio.Semaphore(JEV_MAX_CONCURRENCY)`. Never fire an unbounded `gather`. Reviews are capped at 8,000 chars to stay under Jev's ~32 KB standard-context limit.
+- **No retry loops around Jev**: a failed request leaves the review unscored, and the job continues. Don't replace a missing score with a star-rating guess.
+- Prompts and rubrics are versioned files in `app/llm/prompts/` (`features_v1.md`, `jev_sentiment_v1.json`). Changing a rubric means a new version file, and the version appears in logs and in `jev_scores.csv`.
+- Log per-job token usage and latency.
 
 ### 5.6 UI styling (Tailwind CSS)
 - Tailwind v4 utility classes only; no inline `style` except for dynamic chart widths. Use `clsx`/`tailwind-merge` via a `cn()` helper.
@@ -327,7 +307,7 @@ All domain errors subclass `AppError` (`app/core/errors.py`) and map to a consis
 | `NO_REVIEWS` | 200 (empty result) | Product has zero reviews — show a friendly empty state |
 | `SCRAPE_BLOCKED` | 503 | CAPTCHA / bot wall / repeated 429 |
 | `SCRAPE_TIMEOUT` | 504 | Page or pagination exceeded time budget |
-| `LLM_UNAVAILABLE` | 503 | Groq down or rate limit exhausted |
+| `LLM_UNAVAILABLE` | 503 | Groq or Jev key missing/rejected, Groq down, or Jev could not score any review |
 | `LLM_OUTPUT_INVALID` | 502 | Feature generation unrecoverable after repair |
 
 ### 6.2 Invalid URLs
@@ -342,20 +322,15 @@ All domain errors subclass `AppError` (`app/core/errors.py`) and map to a consis
 - No automated CAPTCHA solving.
 - Tests: fixture HTML for a challenge page asserts detection; integration tests with mocked responses for 429 → backoff → success and 429 → give up → partial.
 
-### 6.4 Malformed LLM JSON
-Layered defence, in order:
-1. **Prevent**: JSON mode / structured output, explicit schema in the prompt, `temperature=0`, one short worked example.
-2. **Parse leniently**: strip code fences and leading/trailing prose before `json.loads`.
-3. **Validate strictly**: Pydantic (`extra="forbid"`) + semantic validator (§5.2).
-4. **Repair**: one retry sending the validation error back to the model ("Fix this JSON to match the schema; errors: …").
-5. **Degrade**: split the batch and retry; if still invalid, map affected reviews to `Overall` using their star rating with `source="fallback"` so aggregates stay honest, and count them in `unprocessed_reviews`.
-- Feature generation failure after repair → fall back to a generic set (`Quality`, `Value for Money`, `Delivery & Packaging`, `Seller Service`, `Overall`) and flag it in the result.
+### 6.4 Malformed model output
+- **Feature generation (Groq)**: structured output with a Pydantic schema (`extra="forbid"`), then one repair attempt that sends the validation error back. If that fails too, fall back to a generic set (`Quality`, `Value for Money`, `Delivery & Packaging`, `Seller Service`, `Overall`) and flag it in the result (`used_fallback_features`).
+- **Jev**: returns typed API JSON, not generated text, so there is no prompt-and-parse defence. A response that doesn't match `SystemOneResponse` is treated like any failed request: the review is left unscored.
 
 ### 6.5 Test strategy
-- **Unit** (`tests/unit`, fast, no network): URL validator, cleaning, batching, JEV semantic validator, repair logic, aggregation math (hand-computed expected numbers). Cleaning and aggregation tests use small fixture CSVs in `tests/fixtures/csv/` and compare with `pd.testing.assert_frame_equal`.
+- **Unit** (`tests/unit`, fast, no network): URL validator, cleaning, Jev client + runner (via `tests/jev_fakes.py`, an `httpx.MockTransport` stand-in for the System One API), feature-generation repair/fallback, aggregation math (hand-computed expected numbers). Cleaning and aggregation tests use small fixture CSVs in `tests/fixtures/csv/` and compare with `pd.testing.assert_frame_equal`.
 - **Parser fixtures**: saved Daraz HTML and review-JSON pages in `tests/fixtures/`; parsers are tested against them, never against live Daraz in CI.
-- **LLM**: mock the Groq client with recorded responses (good, malformed, wrong feature names, missing review ids). A small golden set of ~30 labelled reviews is used to check JEV prompt changes (`pytest -m eval`, run manually).
-- **Integration**: FastAPI `TestClient`/`httpx.AsyncClient` against the full pipeline with scraper + LLM mocked.
+- **Models**: mock Groq with a fake `with_structured_output` (good, invalid → repair, invalid twice → fallback) and Jev with `tests/jev_fakes.py` (scores, HTTP errors, bad keys). A small golden set of ~30 labelled reviews is used to check rubric changes (`pytest -m eval`, run manually).
+- **Integration**: FastAPI `TestClient` against the full pipeline with scraper, Groq and Jev mocked and run files in a temp folder.
 - **Live** (`pytest -m live`, manual only): one real product scrape to detect Daraz DOM/API changes.
 - **Frontend**: Vitest + Testing Library for components and the zod schemas; Playwright e2e for the happy path with a mocked API.
 - Coverage target: ≥ 85% for `app/pipeline` and `app/llm/jev`.
@@ -368,13 +343,13 @@ Layered defence, in order:
 - Run the quality gates in §4 before declaring work done; say which ones were run.
 - Never commit secrets, `.env`, `debug/`, `data/runs/`, scraped data dumps, or Playwright traces.
 - When Daraz markup or endpoints change, update `app/scraper/selectors.py`, the fixtures, and `app/scraper/README.md` together.
-- When a prompt changes, bump its version file rather than editing in place, and re-run the eval set.
+- When a prompt or Jev rubric changes, bump its version file rather than editing in place, and re-run the eval set.
 - Record notable architecture decisions in `docs/decisions/` (short ADRs) and update §2 here if the pipeline changes.
 
 ---
 
 ## 8. Open Questions / TODO
-- Confirm the current Daraz review JSON endpoint and its pagination params from live traffic.
+- **Map reviews to feature categories.** Groq generates the categories, but nothing assigns reviews to them since JEV moved to Jev's single Score question. Option: add one Jev Noul question per category ("Does this review talk about X?") plus a per-category Score in the same request; Jev answers every question in the request in one pass.
 - Decide on job model: synchronous request with SSE progress (current plan) vs. background job queue (needed if analyses exceed ~60s).
 - Persistence: CSV run folders for now; revisit SQLite/Postgres (or Parquet) if run history or multi-user access is needed.
 - Decide whether to show per-feature trends over time using review dates.
