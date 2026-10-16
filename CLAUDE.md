@@ -153,6 +153,8 @@ JEV_MAX_CONCURRENCY=10
 SCRAPER_HEADLESS=true
 SCRAPER_MIN_DELAY_S=1.0
 SCRAPER_MAX_DELAY_S=2.5
+SCRAPER_NAV_TIMEOUT_S=90        # page load; generous for small hosts (Render free: 0.1 CPU)
+SCRAPER_WAIT_TIMEOUT_S=30       # selector / product-detail / review-click waits
 MAX_REVIEW_PAGES=100
 CORS_ORIGINS=http://localhost:3000
 ```
